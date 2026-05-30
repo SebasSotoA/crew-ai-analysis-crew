@@ -1,0 +1,68 @@
+ner_task:
+  description: >
+    Analyze the following document text and extract all named entities.
+    You MUST call the extract_named_entities tool exactly once with the full
+    document_text below. Do not invent entities — return only the tool output.
+
+    Document text:
+    {document_text}
+  expected_output: >
+    JSON output from the NER tool listing entities grouped by label
+    (PERSON, ORG, GPE, DATE, etc.) with entity counts.
+  agent: ner_specialist
+  async_execution: true
+
+sentiment_task:
+  description: >
+    Analyze the sentiment of the following document.
+    You MUST call the analyze_sentiment tool exactly once with the full
+    document_text below. Do not invent scores — return only the tool output.
+
+    Document text:
+    {document_text}
+  expected_output: >
+    JSON output from the sentiment tool with overall label (positive/negative/neutral),
+    confidence score, per-label scores, and insights.
+  agent: sentiment_analyst
+  async_execution: true
+
+similarity_task:
+  description: >
+    Find documents in the indexed corpus that are semantically similar to the
+    following document. You MUST call the find_similar_documents tool exactly once
+    with the full document_text below. Do not invent matches — return only the tool output.
+
+    Document text:
+    {document_text}
+  expected_output: >
+    JSON output from the similarity tool with top matching corpus documents,
+    similarity scores, and text snippets.
+  agent: similarity_analyst
+  async_execution: true
+
+executive_summary_task:
+  description: >
+    Document: "{document_title}"
+
+    Review the full NER, sentiment, and similarity JSON from the prior tasks in your context.
+    Write a **detailed executive analysis in markdown** (not HTML). The system will merge your
+    text into the final HTML report with charts and complete entity lists from the tools.
+
+    Your markdown MUST include:
+    - # Title referencing the document subject
+    - ## Executive summary (2+ paragraphs) using sentiment label, confidence, and insights text
+    - ## Key findings (bullets) citing specific people, places, and organizations from the NER JSON
+    - ## Entity analysis: discuss each major entity type (PERSON, ORG, GPE, etc.) and name
+      important examples from the JSON — do not say only "124 entities" without examples
+    - ## Corpus context: analyze each similar document from the similarity JSON (filename, score,
+      what the snippet implies)
+    - ## Risks and concerns (bullets) grounded in negative sentiment and document themes
+
+    Rules:
+    - Use ONLY facts present in the upstream JSON outputs
+    - Do not output HTML or wrap the response in code fences
+    - Be thorough; do not omit entity types or corpus matches present in the JSON
+  expected_output: >
+    Detailed markdown executive analysis with all sections above, grounded in the
+    specialist task JSON. No HTML.
+  agent: executive_summarizer

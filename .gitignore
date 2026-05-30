@@ -1,0 +1,28 @@
+# Secrets and local env
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.cursor/
+
+# Generated reports and runtime artifacts
+output/
+*.log
